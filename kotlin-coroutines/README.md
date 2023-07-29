@@ -1,5 +1,5 @@
-![JitPack](https://img.shields.io/jitpack/version/com.github.jnnkmsr/util?style=for-the-badge)
-![GitHub](https://img.shields.io/github/license/jnnkmsr/util?style=for-the-badge)
+![JitPack](https://img.shields.io/jitpack/version/com.github.jnnkmsr/kotlin?style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/jnnkmsr/kotlin?style=for-the-badge)
 
 # Utilities for Kotlin Coroutines
 
@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.jnnkmsr.util:kotlin-coroutines:<version>")
+    implementation("com.github.jnnkmsr.kotlin:kotlin-coroutines:<version>")
 }
 ```
 
@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.jnnkmsr:util:kotlin-coroutines:<version>'
+    implementation 'com.github.jnnkmsr:kotlin:kotlin-coroutines:<version>'
 }
 ```
 

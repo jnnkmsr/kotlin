@@ -1,10 +1,10 @@
-![JitPack](https://img.shields.io/jitpack/version/com.github.jnnkmsr/util?style=for-the-badge)
-![GitHub](https://img.shields.io/github/license/jnnkmsr/util?style=for-the-badge)
-![GitHub top language](https://img.shields.io/github/languages/top/jnnkmsr/util?style=for-the-badge)
+![JitPack](https://img.shields.io/jitpack/version/com.github.jnnkmsr/kotlin?style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/jnnkmsr/kotlin?style=for-the-badge)
+![GitHub top language](https://img.shields.io/github/languages/top/jnnkmsr/kotlin?style=for-the-badge)
 
-# Utility Libraries for Kotlin and Android
+# Kotlin Utility Libraries
 
-A collection of small utility libraries for Kotlin and Android.
+A collection of Kotlin utility libraries.
 
 ## Download
 
@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.jnnkmsr.util:<library>:<version>")
+    implementation("com.github.jnnkmsr.kotlin:<library>:<version>")
 }
 ```
 
@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.jnnkmsr.util:<library>:<version>'
+    implementation 'com.github.jnnkmsr.kotlin:<library>:<version>'
 }
 ```
 
