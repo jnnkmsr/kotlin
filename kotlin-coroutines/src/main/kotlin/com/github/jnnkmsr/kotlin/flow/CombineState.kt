@@ -16,16 +16,11 @@
 
 package com.github.jnnkmsr.kotlin.flow
 
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-
-/*
- * Implementation based on:
- * https://blog.shreyaspatil.dev/combining-stateflows-and-transforming-it-into-a-stateflow
- */
 
 /**
  * Returns a [StateFlow] whose values are generated with [transform] function
@@ -34,16 +29,21 @@ import kotlinx.coroutines.flow.stateIn
  *
  * @param flow1 A [StateFlow] to be combined.
  * @param flow2 A [StateFlow] to be combined.
+ * @param scope The [CoroutineScope] in which sharing is started.
+ * @param started The strategy that controls when sharing is started and stopped.
  * @param transform The transform to apply to combine the most recent values of
  *   the original [flows][flow1].
  */
-public fun <T1, T2, R> combineState(
+public fun <T1, T2, R> combineStatesIn(
     flow1: StateFlow<T1>,
     flow2: StateFlow<T2>,
+    scope: CoroutineScope,
+    started: SharingStarted,
     transform: (T1, T2) -> R,
-): StateFlow<R> = CombinedStateFlow(
-    flow = kotlinx.coroutines.flow.combine(flow1, flow2, transform),
-    getValue = { transform(flow1.value, flow2.value) },
+): StateFlow<R> = combine(flow1, flow2, transform).stateIn(
+    scope = scope,
+    initialValue = transform(flow1.value, flow2.value),
+    started = started,
 )
 
 /**
@@ -54,17 +54,22 @@ public fun <T1, T2, R> combineState(
  * @param flow1 A [StateFlow] to be combined.
  * @param flow2 A [StateFlow] to be combined.
  * @param flow3 A [StateFlow] to be combined.
+ * @param scope The [CoroutineScope] in which sharing is started.
+ * @param started The strategy that controls when sharing is started and stopped.
  * @param transform The transform to apply to combine the most recent values of
  *   the original [flows][flow1].
  */
-public fun <T1, T2, T3, R> combineState(
+public fun <T1, T2, T3, R> combineStatesIn(
     flow1: StateFlow<T1>,
     flow2: StateFlow<T2>,
     flow3: StateFlow<T3>,
+    scope: CoroutineScope,
+    started: SharingStarted,
     transform: (T1, T2, T3) -> R,
-): StateFlow<R> = CombinedStateFlow(
-    flow = kotlinx.coroutines.flow.combine(flow1, flow2, flow3, transform),
-    getValue = { transform(flow1.value, flow2.value, flow3.value) },
+): StateFlow<R> = combine(flow1, flow2, flow3, transform).stateIn(
+    scope = scope,
+    initialValue = transform(flow1.value, flow2.value, flow3.value),
+    started = started,
 )
 
 /**
@@ -75,18 +80,23 @@ public fun <T1, T2, T3, R> combineState(
  * @param flow1 A [StateFlow] to be combined.
  * @param flow2 A [StateFlow] to be combined.
  * @param flow3 A [StateFlow] to be combined.
+ * @param scope The [CoroutineScope] in which sharing is started.
+ * @param started The strategy that controls when sharing is started and stopped.
  * @param transform The transform to apply to combine the most recent values of
  *   the original [flows][flow1].
  */
-public fun <T1, T2, T3, T4, R> combineState(
+public fun <T1, T2, T3, T4, R> combineStatesIn(
     flow1: StateFlow<T1>,
     flow2: StateFlow<T2>,
     flow3: StateFlow<T3>,
     flow4: StateFlow<T4>,
+    scope: CoroutineScope,
+    started: SharingStarted,
     transform: (T1, T2, T3, T4) -> R,
-): StateFlow<R> = CombinedStateFlow(
-    flow = kotlinx.coroutines.flow.combine(flow1, flow2, flow3, flow4, transform),
-    getValue = { transform(flow1.value, flow2.value, flow3.value, flow4.value) },
+): StateFlow<R> = combine(flow1, flow2, flow3, flow4, transform).stateIn(
+    scope = scope,
+    initialValue = transform(flow1.value, flow2.value, flow3.value, flow4.value),
+    started = started,
 )
 
 /**
@@ -99,19 +109,24 @@ public fun <T1, T2, T3, T4, R> combineState(
  * @param flow3 A [StateFlow] to be combined.
  * @param flow4 A [StateFlow] to be combined.
  * @param flow5 A [StateFlow] to be combined.
+ * @param scope The [CoroutineScope] in which sharing is started.
+ * @param started The strategy that controls when sharing is started and stopped.
  * @param transform The transform to apply to combine the most recent values of
  *   the original [flows][flow1].
  */
-public fun <T1, T2, T3, T4, T5, R> combineState(
+public fun <T1, T2, T3, T4, T5, R> combineStatesIn(
     flow1: StateFlow<T1>,
     flow2: StateFlow<T2>,
     flow3: StateFlow<T3>,
     flow4: StateFlow<T4>,
     flow5: StateFlow<T5>,
+    scope: CoroutineScope,
+    started: SharingStarted,
     transform: (T1, T2, T3, T4, T5) -> R,
-): StateFlow<R> = CombinedStateFlow(
-    flow = kotlinx.coroutines.flow.combine(flow1, flow2, flow3, flow4, flow5, transform),
-    getValue = { transform(flow1.value, flow2.value, flow3.value, flow4.value, flow5.value) },
+): StateFlow<R> = combine(flow1, flow2, flow3, flow4, flow5, transform).stateIn(
+    scope = scope,
+    initialValue = transform(flow1.value, flow2.value, flow3.value, flow4.value, flow5.value),
+    started = started,
 )
 
 /**
@@ -120,36 +135,18 @@ public fun <T1, T2, T3, T4, T5, R> combineState(
  * [flows].
  *
  * @param flows The [StateFlow]s to be combined.
+ * @param scope The [CoroutineScope] in which sharing is started.
+ * @param started The strategy that controls when sharing is started and stopped.
  * @param transform The transform to apply to combine the most recent values of
  *   the original [flows].
  */
-public inline fun <reified T, R> combineState(
+public inline fun <reified T, R> combineStatesIn(
     vararg flows: StateFlow<T>,
+    scope: CoroutineScope,
+    started: SharingStarted,
     crossinline transform: (Array<T>) -> R,
-): StateFlow<R> = CombinedStateFlow(
-    flow = kotlinx.coroutines.flow.combine(flows.toList(), transform),
-    getValue = { transform(flows.map(StateFlow<T>::value).toTypedArray()) },
+): StateFlow<R> = combine(flows.toList(), transform).stateIn(
+    scope = scope,
+    initialValue = transform(flows.map(StateFlow<T>::value).toTypedArray()),
+    started = started,
 )
-
-/**
- * A [StateFlow] implementation that separates flow collection and reading
- * of [StateFlow.value] for [combining][combineState] multiple [StateFlow]s without
- * calling [stateIn].
- *
- * See: [Combining StateFlows and transforming it into a StateFlow](https://blog.shreyaspatil.dev/combining-stateflows-and-transforming-it-into-a-stateflow)
- */
-@PublishedApi
-internal class CombinedStateFlow<T>(
-    private val flow: Flow<T>,
-    private val getValue: () -> T,
-) : StateFlow<T> {
-
-    override val value: T
-        get() = getValue()
-
-    override val replayCache: List<T>
-        get() = listOf(value)
-
-    override suspend fun collect(collector: FlowCollector<T>): Nothing =
-        coroutineScope { flow.stateIn(this).collect(collector) }
-}
