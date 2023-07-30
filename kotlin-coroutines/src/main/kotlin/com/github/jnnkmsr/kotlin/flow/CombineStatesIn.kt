@@ -145,8 +145,8 @@ public inline fun <reified T, R> combineStatesIn(
     scope: CoroutineScope,
     started: SharingStarted,
     crossinline transform: (Array<T>) -> R,
-): StateFlow<R> = combine(flows.toList(), transform).stateIn(
+): StateFlow<R> = combine(*flows) { values -> transform(values) }.stateIn(
     scope = scope,
-    initialValue = transform(flows.map(StateFlow<T>::value).toTypedArray()),
+    initialValue = transform(flows.map { flow -> flow.value }.toTypedArray()),
     started = started,
 )
