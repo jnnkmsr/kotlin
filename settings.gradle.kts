@@ -31,6 +31,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Util"
-include(":sample")
+rootProject.name = "KotlinLibraries"
+include(":app")
 include(":kotlin-coroutines")
+include(":kotlin-compose")

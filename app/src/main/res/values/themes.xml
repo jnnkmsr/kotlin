@@ -15,7 +15,7 @@
   limitations under the License.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- App theme. -->
     <style name="Theme.Sample" parent="PlatformAdjusted.Theme.Sample" />
@@ -35,13 +35,13 @@
     <!-- Override night-mode-specific attributes in the values-night folder. -->
     <style name="NightAdjusted.Theme.Sample" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 
     <!-- Override night-mode-specific attributes in the values-night folder. -->
     <style name="NightAdjusted.Theme.Splash" parent="Theme.SplashScreen">
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 
 </resources>

@@ -19,9 +19,6 @@ plugins {
     `maven-publish`
 }
 
-group = "com.github.jnnkmsr"
-version = libs.versions.published.get()
-
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -34,7 +31,7 @@ afterEvaluate {
     publishing {
         publications {
             create<MavenPublication>("mavenJava") {
-                artifactId = "library"
+                artifactId = "kotlin-coroutines"
 
                 from(components["java"])
 

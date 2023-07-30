@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 /*
  * Copyright 2023 Jannik Möser
  *
@@ -17,37 +15,39 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
  */
 
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    `maven-publish`
 }
 
 android {
-    namespace = "com.github.jnnkmsr.util.sample"
+    namespace = "com.github.jnnkmsr.kotlin.compose"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.github.jnnkmsr.util.sample"
-        versionCode = 1
-        versionName = libs.versions.published.get()
-
-        minSdk = 28
-        targetSdk = 34
-
+        minSdk = 14
+        aarMetadata {
+            minCompileSdk = 14
+        }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
         }
     }
 
     buildFeatures {
         compose = true
-        buildConfig = true
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
 
     compileOptions {
@@ -58,6 +58,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+    kotlin.explicitApi()
 
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
@@ -68,15 +69,18 @@ android {
     }
 }
 
-dependencies {
-    implementation(libs.android.core)
-    implementation(libs.android.lifecycle)
-    implementation(libs.android.splashscreen)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.activity)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.lifecycle)
-    implementation(libs.compose.accompanist.systemuicontroller)
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                artifactId = "kotlin-compose"
 
-    implementation(project(":kotlin-coroutines"))
+                from(components["release"])
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation(libs.compose.runtime)
 }
